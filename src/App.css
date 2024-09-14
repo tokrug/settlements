@@ -1,0 +1,81 @@
+
+
+.logo {
+  height: 60px;
+  padding: 1.5em;
+  transition: transform 0.3s;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-spin {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+
+.table th {
+  background-color: #1976d2;
+  color: #ffffff;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  .table th {
+    background-color: #90caf9;
+    color: #000000;
+  }
+
+  .table tbody tr:nth-child(even) {
+    background-color: #2c2c2c;
+  }
+}
+
+.dialog-title {
+  color: #1976d2;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dialog-title {
+    color: #90caf9;
+  }
+}
+
+.main-container {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: left;
+}
