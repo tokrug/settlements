@@ -1,54 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Paper } from '@mui/material';
 import { Settlement, Person } from '../../models/models';
-import { computeBalances } from '../../models/balance';
+import { Balance, computeBalances } from '../../models/balance';
+import { calculateDebts } from '../../models/debt';
 import { formatCurrency } from '../../utils/currencyFormatter';
 
 interface DebtMatrixProps {
     settlement: Settlement;
 }
 
+interface DebtsByCurrency {
+    [currency: string]: DebtMatrix;
+}
+
+interface DebtMatrix {
+    [debtorId: string]: { [creditorId: string]: number }
+}
+
 const DebtMatrix: React.FC<DebtMatrixProps> = ({ settlement }) => {
     const { participants } = settlement;
     const [debts, setDebts] = useState<{ [currency: string]: { [debtorId: string]: { [creditorId: string]: number } } }>({});
-
-    // Adjusted calculateDebts to handle balances for each currency separately
-    const calculateDebts = (balancesByCurrency: { currency: string; balances: { [participantId: string]: number } }[]) => {
-        const debtsByCurrency: { [currency: string]: { [debtorId: string]: { [creditorId: string]: number } } } = {};
-
-        balancesByCurrency.forEach(({ currency, balances }) => {
-            const creditors = Object.entries(balances)
-                .filter(([_, balance]) => balance > 0)
-                .map(([id, balance]) => ({ id, balance }));
-
-            const debtors = Object.entries(balances)
-                .filter(([_, balance]) => balance < 0)
-                .map(([id, balance]) => ({ id, balance: -balance }));
-
-            const debtsMatrix: { [debtorId: string]: { [creditorId: string]: number } } = {};
-
-            debtors.forEach(debtor => {
-                let amountOwed = debtor.balance;
-                creditors.forEach(creditor => {
-                    if (amountOwed === 0) return;
-                    if (creditor.balance === 0) return;
-
-                    const owed = Math.min(amountOwed, creditor.balance);
-                    if (!debtsMatrix[debtor.id]) {
-                        debtsMatrix[debtor.id] = {};
-                    }
-                    debtsMatrix[debtor.id][creditor.id] = (debtsMatrix[debtor.id][creditor.id] || 0) + owed;
-
-                    creditor.balance -= owed;
-                    amountOwed -= owed;
-                });
-            });
-
-            debtsByCurrency[currency] = debtsMatrix;
-        });
-
-        return debtsByCurrency;
-    };
 
     useEffect(() => {
         if (settlement) {

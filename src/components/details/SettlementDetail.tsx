@@ -123,11 +123,6 @@ const SettlementDetail: React.FC = () => {
                 updateTransfer={handleUpdateTransfer}
             />
 
-            {/* Debts Matrix Component */}
-            <DebtMatrix
-                settlement={settlement}
-            />
-
             {/* Balances Component */}
             <Balances
                 settlement={settlement}
@@ -137,6 +132,11 @@ const SettlementDetail: React.FC = () => {
             <ProposedTransfers
                 settlement={settlement}
                 addTransfer={handleAddTransfer}
+            />
+
+            {/* Debts Matrix Component */}
+            <DebtMatrix
+                settlement={settlement}
             />
         </>
     );
