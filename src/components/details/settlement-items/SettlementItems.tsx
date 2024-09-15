@@ -61,12 +61,13 @@ const SettlementItems: React.FC<SettlementItemsProps> = ({ settlement, addItem, 
             </Typography>
             <Button
                 variant="outlined"
+                size="small"
                 onClick={() => setOpenNewItem(true)}
                 style={{ marginBottom: '1rem' }}
             >
                 Add Item
             </Button>
-            <Table>
+            <Table size="small">
                 <TableHead>
                     {/* New Header Row */}
                     <TableRow>
@@ -111,10 +112,10 @@ const SettlementItems: React.FC<SettlementItemsProps> = ({ settlement, addItem, 
                                 </TableCell>
                             ))}
                             <TableCell>
-                                <IconButton onClick={() => setEditItem(item)}>
+                                <IconButton size="small" onClick={() => setEditItem(item)}>
                                     ✏️
                                 </IconButton>
-                                <IconButton onClick={() => deleteItem(item.id)}>
+                                <IconButton size="small" onClick={() => deleteItem(item.id)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </TableCell>

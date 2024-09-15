@@ -10,39 +10,51 @@ interface DebtMatrixProps {
 
 const DebtMatrix: React.FC<DebtMatrixProps> = ({ settlement }) => {
     const { participants } = settlement;
-    const [debts, setDebts] = useState<{ [key: string]: { [key: string]: number } }>({});
-    
-    const calculateDebts = (balances: { id: string; name: string; balance: number }[]) => {
-        const creditors = balances.filter(b => b.balance > 0).map(b => ({ ...b }));
-        const debtors = balances.filter(b => b.balance < 0).map(b => ({ ...b, balance: -b.balance }));
+    const [debts, setDebts] = useState<{ [currency: string]: { [debtorId: string]: { [creditorId: string]: number } } }>({});
 
-        const debtsMatrix: { [key: string]: { [key: string]: number } } = {};
+    // Adjusted calculateDebts to handle balances for each currency separately
+    const calculateDebts = (balancesByCurrency: { currency: string; balances: { [participantId: string]: number } }[]) => {
+        const debtsByCurrency: { [currency: string]: { [debtorId: string]: { [creditorId: string]: number } } } = {};
 
-        debtors.forEach(debtor => {
-            let amountOwed = debtor.balance;
-            creditors.forEach(creditor => {
-                if (amountOwed === 0) return;
-                if (creditor.balance === 0) return;
+        balancesByCurrency.forEach(({ currency, balances }) => {
+            const creditors = Object.entries(balances)
+                .filter(([_, balance]) => balance > 0)
+                .map(([id, balance]) => ({ id, balance }));
 
-                const owed = Math.min(amountOwed, creditor.balance);
-                if (!debtsMatrix[debtor.id]) {
-                    debtsMatrix[debtor.id] = {};
-                }
-                debtsMatrix[debtor.id][creditor.id] = (debtsMatrix[debtor.id][creditor.id] || 0) + owed;
+            const debtors = Object.entries(balances)
+                .filter(([_, balance]) => balance < 0)
+                .map(([id, balance]) => ({ id, balance: -balance }));
 
-                creditor.balance -= owed;
-                amountOwed -= owed;
+            const debtsMatrix: { [debtorId: string]: { [creditorId: string]: number } } = {};
+
+            debtors.forEach(debtor => {
+                let amountOwed = debtor.balance;
+                creditors.forEach(creditor => {
+                    if (amountOwed === 0) return;
+                    if (creditor.balance === 0) return;
+
+                    const owed = Math.min(amountOwed, creditor.balance);
+                    if (!debtsMatrix[debtor.id]) {
+                        debtsMatrix[debtor.id] = {};
+                    }
+                    debtsMatrix[debtor.id][creditor.id] = (debtsMatrix[debtor.id][creditor.id] || 0) + owed;
+
+                    creditor.balance -= owed;
+                    amountOwed -= owed;
+                });
             });
+
+            debtsByCurrency[currency] = debtsMatrix;
         });
 
-        return debtsMatrix;
+        return debtsByCurrency;
     };
 
     useEffect(() => {
         if (settlement) {
-            const balances = computeBalances(settlement);
-            const computedDebts = calculateDebts(balances);
-            setDebts(computedDebts);
+            const balancesByCurrency = computeBalances(settlement); // Get balances grouped by currency
+            const computedDebtsByCurrency = calculateDebts(balancesByCurrency); // Calculate debts for each currency
+            setDebts(computedDebtsByCurrency); // Store debts in state
         }
     }, [settlement]);
 
@@ -51,7 +63,7 @@ const DebtMatrix: React.FC<DebtMatrixProps> = ({ settlement }) => {
             <Typography variant="h5" gutterBottom style={{ marginTop: '2rem' }}>
                 Debts Matrix
             </Typography>
-            <Table>
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -62,16 +74,20 @@ const DebtMatrix: React.FC<DebtMatrixProps> = ({ settlement }) => {
                 </TableHead>
                 <TableBody>
                     {participants.map((row) => (
-                        <TableRow key={row.id}>
-                            <TableCell>{row.name} owns</TableCell>
-                            {participants.map((col) => (
-                                <TableCell key={col.id} align="right">
-                                    {debts[row.id] && debts[row.id][col.id]
-                                        ? formatCurrency(debts[row.id][col.id], 'USD')
-                                        : ''}
+                        Object.keys(debts).map((currency) => (
+                            <TableRow key={`${row.id}-${currency}`}>
+                                <TableCell>
+                                    {row.name} owes ({currency})
                                 </TableCell>
-                            ))}
-                        </TableRow>
+                                {participants.map((col) => (
+                                    <TableCell key={col.id} align="right">
+                                        {debts[currency][row.id] && debts[currency][row.id][col.id]
+                                            ? formatCurrency(debts[currency][row.id][col.id], currency)
+                                            : ''}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))
                     ))}
                 </TableBody>
             </Table>

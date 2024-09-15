@@ -23,7 +23,7 @@ const NavigationBar: React.FC = () => {
 
     return (
         <AppBar position="static">
-            <Container fixed>
+            <Container fixed maxWidth="xl">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Settlements App

@@ -11,7 +11,7 @@ const App: React.FC = () => {
     return (
         <React.Fragment>
             <NavigationBar />
-            <Container fixed sx={{ width: 1 }}>
+            <Container fixed maxWidth="xl" sx={{ width: 1 }}>
                 <Routes>
                     <Route path="/" element={<AuthComponent />} />
                     <Route path="/settlements" element={<SettlementsList />} />

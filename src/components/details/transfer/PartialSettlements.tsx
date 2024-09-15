@@ -37,13 +37,14 @@ const PartialSettlements: React.FC<PartialSettlementsProps> = ({ settlement, add
                 Transfers
             </Typography>
             <Button
+                size="small"
                 variant="outlined"
                 onClick={() => setOpenNewTransfer(true)}
                 style={{ marginBottom: '1rem' }}
             >
                 Add Transfer
             </Button>
-            <Table>
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>Date</TableCell>
@@ -65,12 +66,12 @@ const PartialSettlements: React.FC<PartialSettlementsProps> = ({ settlement, add
                                 {participants.find(p => p.id === transfer.receiverId)?.name || 'Unknown'}
                             </TableCell>
                             <TableCell>
-                                <IconButton onClick={() => {
+                                <IconButton size="small" onClick={() => {
                                     setEditTransfer(transfer);
                                 }}>
                                     ✏️
                                 </IconButton>
-                                <IconButton onClick={() => deleteTransfer(transfer.id)}>
+                                <IconButton size="small" onClick={() => deleteTransfer(transfer.id)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </TableCell>

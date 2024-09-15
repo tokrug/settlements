@@ -92,11 +92,12 @@ const SettlementDetail: React.FC = () => {
             <Typography variant="h4" gutterBottom>
                 {settlement.title}
             </Typography>
-            <Button variant="outlined" onClick={() => navigate('/settlements')}>
+            <Button size="small" variant="outlined" onClick={() => navigate('/settlements')}>
                 Back to List
             </Button>
             {auth.currentUser?.uid === settlement.ownerId && (
                 <Button
+                    size="small"
                     variant="outlined"
                     onClick={togglePublicAccess}
                     style={{ marginLeft: '1rem' }}
