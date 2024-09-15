@@ -8,6 +8,7 @@ import {
     IconButton,
     Typography,
     Button,
+    Paper,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Settlement, PartialSettlement, Person } from '../../../models/models';
@@ -44,7 +45,7 @@ const PartialSettlements: React.FC<PartialSettlementsProps> = ({ settlement, add
             >
                 Add Transfer
             </Button>
-            <Table size="small">
+            <Table size="small" component={Paper}>
                 <TableHead>
                     <TableRow>
                         <TableCell>Date</TableCell>

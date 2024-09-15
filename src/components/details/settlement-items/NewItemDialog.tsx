@@ -85,7 +85,7 @@ const NewItemDialog: React.FC<NewItemDialogProps> = ({
                 <TextField
                         select
                         label="Currency"
-                    value={selectedCurrency}
+                        value={selectedCurrency}
                     onChange={(e) => setSelectedCurrency(e.target.value)} // Update selected currency
                 >
                     {Object.values(currencies).map((currency) => (

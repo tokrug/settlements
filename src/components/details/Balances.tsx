@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Paper } from '@mui/material';
 import { Settlement } from '../../models/models';
 import { Balance, computeBalances } from '../../models/balance';
 import { formatCurrency } from '../../utils/currencyFormatter';
@@ -22,7 +22,7 @@ const Balances: React.FC<BalancesProps> = ({ settlement }) => {
             <Typography variant="h5" gutterBottom style={{ marginTop: '2rem' }}>
                 Balances
             </Typography>
-            <Table size="small">
+            <Table size="small" component={Paper}>
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Paper } from '@mui/material';
 import { Settlement, Person } from '../../models/models';
 import { computeBalances } from '../../models/balance';
 import { formatCurrency } from '../../utils/currencyFormatter';
@@ -63,7 +63,7 @@ const DebtMatrix: React.FC<DebtMatrixProps> = ({ settlement }) => {
             <Typography variant="h5" gutterBottom style={{ marginTop: '2rem' }}>
                 Debts Matrix
             </Typography>
-            <Table size="small">
+            <Table size="small" component={Paper}>
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>

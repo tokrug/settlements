@@ -8,6 +8,7 @@ import {
     IconButton,
     Typography,
     Button,
+    Paper,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Settlement, Item, Person } from '../../../models/models';
@@ -67,7 +68,7 @@ const SettlementItems: React.FC<SettlementItemsProps> = ({ settlement, addItem, 
             >
                 Add Item
             </Button>
-            <Table size="small">
+            <Table size="small" component={Paper}>
                 <TableHead>
                     {/* New Header Row */}
                     <TableRow>
@@ -123,16 +124,16 @@ const SettlementItems: React.FC<SettlementItemsProps> = ({ settlement, addItem, 
                     ))}
                     {/* Summary Row */}
                     {Array.from(currenciesUsed).map((currency) => (
-                        <TableRow key={currency}>
+                        <TableRow key={currency} style={{ borderTop: '2px solid black' }}>
                             <TableCell><strong>Total {currency}</strong></TableCell>
                             <TableCell style={{ borderRight: '2px solid black' }}></TableCell>
                             {participants.map((p) => (
-                                    <TableCell key={`sum-paid-${p.id}`} style={{ borderRight: 'none' }}>
+                                    <TableCell key={`sum-paid-${p.id}`} style={{ borderRight: p === participants[participants.length - 1] ? '2px solid black' : 'none' }}>
                                             <strong>{formatCurrency(summaryPaidBy[currency][p.id], currency)}</strong>
                                     </TableCell>
                             ))}
                             {participants.map((p) => (
-                                    <TableCell key={`sum-shouldPay-${p.id}`} style={{ borderRight: 'none' }}>
+                                    <TableCell key={`sum-shouldPay-${p.id}`} style={{ borderRight: p === participants[participants.length - 1] ? '2px solid black' : 'none' }}>
                                         <strong>{formatCurrency(summaryShouldPay[currency][p.id], currency)}</strong>
                                     </TableCell>
                             ))}

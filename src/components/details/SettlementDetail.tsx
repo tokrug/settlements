@@ -15,6 +15,7 @@ import SettlementItems from './settlement-items/SettlementItems';
 import PartialSettlements from './transfer/PartialSettlements';
 import DebtMatrix from './DebtMatrix';
 import Balances from './Balances';
+import ProposedTransfers from './ProposedTransfers';
 
 const SettlementDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -132,6 +133,11 @@ const SettlementDetail: React.FC = () => {
                 settlement={settlement}
             />
 
+            {/* Proposed Transfers Component */}
+            <ProposedTransfers
+                settlement={settlement}
+                addTransfer={handleAddTransfer}
+            />
         </>
     );
 };
