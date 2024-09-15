@@ -7,8 +7,10 @@ import {
     DialogActions,
     Button,
     Typography,
+    MenuItem,
 } from '@mui/material';
 import { Person, Item } from '../../../models/models';
+import { currencies } from '../../../models/currency'; // Import currencies
 
 interface EditItemDialogProps {
     open: boolean;
@@ -27,6 +29,7 @@ const EditItemDialog: React.FC<EditItemDialogProps> = ({
                                                        }) => {
     const [title, setTitle] = useState(item.title);
     const [date, setDate] = useState(item.date || '');
+    const [selectedCurrency, setSelectedCurrency] = useState(item.currency);
     const [paidBy, setPaidBy] = useState<{ [key: string]: number }>(item.paidBy);
     const [shouldPay, setShouldPay] = useState<{ [key: string]: number }>(
         item.shouldPay
@@ -49,6 +52,7 @@ const EditItemDialog: React.FC<EditItemDialogProps> = ({
             date,
             paidBy,
             shouldPay,
+            currency: selectedCurrency
         };
         onUpdateItem(updatedItem);
         onClose();
@@ -74,6 +78,18 @@ const EditItemDialog: React.FC<EditItemDialogProps> = ({
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                 />
+                <TextField
+                    select
+                    label="Currency"
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value)} // Update selected currency
+                >
+                    {Object.values(currencies).map((currency) => (
+                        <MenuItem key={currency.code} value={currency.code}>
+                            {currency.symbol} {currency.code}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <Typography variant="h6">Amounts Paid</Typography>
                 {participants.map((p) => (
                     <TextField

@@ -57,7 +57,7 @@ const PartialSettlements: React.FC<PartialSettlementsProps> = ({ settlement, add
                     {partialSettlements.map((transfer) => (
                         <TableRow key={transfer.id}>
                             <TableCell>{transfer.date}</TableCell>
-                            <TableCell>{formatCurrency(transfer.amount, 'USD')}</TableCell>
+                            <TableCell>{formatCurrency(transfer.amount, transfer.currency)}</TableCell>
                             <TableCell>
                                 {participants.find(p => p.id === transfer.senderId)?.name || 'Unknown'}
                             </TableCell>

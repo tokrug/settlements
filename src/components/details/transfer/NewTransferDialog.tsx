@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { PartialSettlement, Person } from '../../../models/models';
 import { v4 as uuidv4 } from 'uuid';
+import { currencies } from '../../../models/currency'; // Import currencies
 
 interface NewTransferDialogProps {
     open: boolean;
@@ -31,6 +32,7 @@ const NewTransferDialog: React.FC<NewTransferDialogProps> = ({
     const [newTransferAmount, setNewTransferAmount] = useState<number>(0);
     const [newTransferSender, setNewTransferSender] = useState<string>('');
     const [newTransferReceiver, setNewTransferReceiver] = useState<string>('');
+    const [newTransferCurrency, setNewTransferCurrency] = useState<string>('');
 
     const handleAdd = () => {
         if (newTransferSender === newTransferReceiver) {
@@ -56,6 +58,7 @@ const NewTransferDialog: React.FC<NewTransferDialogProps> = ({
             amount: newTransferAmount,
             senderId: newTransferSender,
             receiverId: newTransferReceiver,
+            currency: newTransferCurrency
         };
 
         onAddTransfer(newTransfer);
@@ -65,6 +68,7 @@ const NewTransferDialog: React.FC<NewTransferDialogProps> = ({
         setNewTransferAmount(0);
         setNewTransferSender('');
         setNewTransferReceiver('');
+        setNewTransferCurrency('USD');
         onClose();
     };
 
@@ -91,6 +95,18 @@ const NewTransferDialog: React.FC<NewTransferDialogProps> = ({
                     value={newTransferAmount}
                     onChange={(e) => setNewTransferAmount(Number(e.target.value))}
                 />
+                <TextField
+                        select
+                        label="Currency"
+                    value={newTransferCurrency}
+                    onChange={(e) => setNewTransferCurrency(e.target.value)} // Update selected currency
+                >
+                    {Object.values(currencies).map((currency) => (
+                        <MenuItem key={currency.code} value={currency.code}>
+                            {currency.symbol} {currency.code}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <FormControl fullWidth margin="dense">
                     <InputLabel id="sender-label">Od</InputLabel>
                     <Select

@@ -9,6 +9,7 @@ import {
     MenuItem,
 } from '@mui/material';
 import { PartialSettlement, Person } from '../../../models/models';
+import { currencies } from '../../../models/currency'; // Import currencies
 
 interface EditTransferDialogProps {
     open: boolean;
@@ -27,6 +28,7 @@ const EditTransferDialog: React.FC<EditTransferDialogProps> = ({
 }) => {
     const [date, setDate] = useState<string>(transfer.date);
     const [amount, setAmount] = useState<number>(transfer.amount);
+    const [currency, setCurrency] = useState<string>(transfer.currency);
     const [senderId, setSenderId] = useState<string>(transfer.senderId);
     const [receiverId, setReceiverId] = useState<string>(transfer.receiverId);
 
@@ -37,6 +39,7 @@ const EditTransferDialog: React.FC<EditTransferDialogProps> = ({
             amount,
             senderId,
             receiverId,
+            currency
         };
         onUpdateTransfer(updatedTransfer);
         onClose();
@@ -65,6 +68,18 @@ const EditTransferDialog: React.FC<EditTransferDialogProps> = ({
                     fullWidth
                     margin="normal"
                 />
+                <TextField
+                        select
+                        label="Currency"
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)} // Update selected currency
+                >
+                    {Object.values(currencies).map((currency) => (
+                        <MenuItem key={currency.code} value={currency.code}>
+                            {currency.symbol} {currency.code}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <TextField
                     select
                     label="Sender"

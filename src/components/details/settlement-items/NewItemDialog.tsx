@@ -7,14 +7,17 @@ import {
     DialogActions,
     Button,
     Typography,
+    MenuItem,
 } from '@mui/material';
 import { Person, Item } from '../../../models/models';
 import { v4 as uuidv4 } from 'uuid';
+import { currencies } from '../../../models/currency'; // Import currencies
 
 interface NewItemDialogProps {
     open: boolean;
     onClose: () => void;
     participants: Person[];
+    defaultCurrency: string;
     onAddItem: (item: Item) => void;
 }
 
@@ -22,12 +25,14 @@ const NewItemDialog: React.FC<NewItemDialogProps> = ({
                                                          open,
                                                          onClose,
                                                          participants,
+                                                         defaultCurrency,
                                                          onAddItem,
                                                      }) => {
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [paidBy, setPaidBy] = useState<{ [key: string]: number }>({});
     const [shouldPay, setShouldPay] = useState<{ [key: string]: number }>({});
+    const [selectedCurrency, setSelectedCurrency] = useState(defaultCurrency);
 
     const handleAddItem = () => {
         const totalPaid = Object.values(paidBy).reduce((a, b) => a + b, 0);
@@ -46,6 +51,7 @@ const NewItemDialog: React.FC<NewItemDialogProps> = ({
             date,
             paidBy,
             shouldPay,
+            currency: selectedCurrency
         };
         onAddItem(newItem);
         onClose();
@@ -53,6 +59,7 @@ const NewItemDialog: React.FC<NewItemDialogProps> = ({
         setDate('');
         setPaidBy({});
         setShouldPay({});
+        setSelectedCurrency(defaultCurrency);
     };
 
     return (
@@ -75,6 +82,18 @@ const NewItemDialog: React.FC<NewItemDialogProps> = ({
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                 />
+                <TextField
+                        select
+                        label="Currency"
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value)} // Update selected currency
+                >
+                    {Object.values(currencies).map((currency) => (
+                        <MenuItem key={currency.code} value={currency.code}>
+                            {currency.symbol} {currency.code}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <Typography variant="h6">Paid Amounts</Typography>
                 {participants.map((p) => (
                     <TextField

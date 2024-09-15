@@ -25,6 +25,7 @@ export const createTestSettlement = (ownerId: string): Settlement => {
         [person2Id]: 10,
         [person3Id]: 10,
       },
+      currency: 'USD'
     };
   
     const item2: Item = {
@@ -37,6 +38,7 @@ export const createTestSettlement = (ownerId: string): Settlement => {
         [person2Id]: 15,
         [person3Id]: 15,
       },
+      currency: 'USD'
     };
   
     // Generate UUIDs for partial settlements
@@ -49,6 +51,7 @@ export const createTestSettlement = (ownerId: string): Settlement => {
       amount: 10,
       senderId: person2Id,
       receiverId: person1Id,
+      currency: 'USD'
     };
   
     const partialSettlement2: PartialSettlement = {
@@ -57,6 +60,7 @@ export const createTestSettlement = (ownerId: string): Settlement => {
       amount: 15,
       senderId: person3Id,
       receiverId: person2Id,
+      currency: 'USD'
     };
   
     // Generate a UUID for the settlement
@@ -69,8 +73,9 @@ export const createTestSettlement = (ownerId: string): Settlement => {
       items: [item1, item2],
       partialSettlements: [partialSettlement1, partialSettlement2],
       ownerId: ownerId, // Use the input parameter for ownerId
-      isPublic: false
+      isPublic: false,
+      defaultCurrency: 'USD'
     };
   
     return settlement;
-  }
+}

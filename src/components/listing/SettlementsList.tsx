@@ -11,6 +11,7 @@ import {
     DialogContent,
     TextField,
     DialogActions,
+    MenuItem,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -20,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Person, Settlement } from '../../models/models';
 import { auth } from '../../firebase';
 import { createTestSettlement } from '../../testing/CreateTestSettlement';
+import { currencies } from '../../models/currency'; // Import currencies
 
 const SettlementsList: React.FC = () => {
     const { settlements, addSettlement, deleteSettlement, updateSettlement } =
@@ -31,6 +33,7 @@ const SettlementsList: React.FC = () => {
     const [openEdit, setOpenEdit] = useState(false);
     const [editingSettlement, setEditingSettlement] = useState<Settlement | null>(null);
     const [editTitle, setEditTitle] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('USD'); // New state for selected currency
     const navigate = useNavigate();
 
     const handleCreateSettlement = () => {
@@ -41,27 +44,35 @@ const SettlementsList: React.FC = () => {
             items: [],
             partialSettlements: [], // Initialize as empty array
             ownerId: auth.currentUser.uid,
-            isPublic: false
+            isPublic: false,
+            defaultCurrency: selectedCurrency // Use selected currency
         };
         addSettlement(newSettlement);
         setOpen(false);
         setTitle('');
+        setSelectedCurrency('USD');
         setParticipants([]);
     };
 
     const handleOpenEditDialog = (settlement: Settlement) => {
         setEditingSettlement(settlement);
         setEditTitle(settlement.title);
+        setSelectedCurrency(settlement.defaultCurrency);
         setOpenEdit(true);
     };
 
     const handleEditSettlement = () => {
         if (editingSettlement) {
-            const updatedSettlement: Settlement = { ...editingSettlement, title: editTitle };
+            const updatedSettlement: Settlement = { 
+                ...editingSettlement, 
+                title: editTitle, 
+                defaultCurrency: selectedCurrency // Use selected currency
+            };
             updateSettlement(updatedSettlement);
             setOpenEdit(false);
             setEditingSettlement(null);
             setEditTitle('');
+            setSelectedCurrency('USD');
         }
     };
 
@@ -124,6 +135,7 @@ const SettlementsList: React.FC = () => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
+                    
                     <Typography variant="h6">Participants</Typography>
                     {participants.map((p) => (
                         <Typography key={p.id}>{p.name}</Typography>
@@ -148,6 +160,18 @@ const SettlementsList: React.FC = () => {
                     >
                         Add Participant
                     </Button>
+                    <TextField
+                        select
+                        label="Currency"
+                        value={selectedCurrency}
+                        onChange={(e) => setSelectedCurrency(e.target.value)} // Update selected currency
+                    >
+                        {Object.values(currencies).map((currency) => (
+                            <MenuItem key={currency.code} value={currency.code}>
+                                {currency.symbol} {currency.code}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>
@@ -166,6 +190,18 @@ const SettlementsList: React.FC = () => {
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
                     />
+                    <TextField
+                        select
+                        label="Currency"
+                        value={selectedCurrency}
+                        onChange={(e) => setSelectedCurrency(e.target.value)} // Update selected currency
+                    >
+                        {Object.values(currencies).map((currency) => (
+                            <MenuItem key={currency.code} value={currency.code}>
+                                {currency.symbol} {currency.code}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenEdit(false)}>Cancel</Button>

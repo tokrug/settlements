@@ -13,6 +13,7 @@ export interface Item {
     date?: string;
     paidBy: Payment;
     shouldPay: Payment;
+    currency: string;
 }
 
 export interface PartialSettlement {
@@ -21,6 +22,7 @@ export interface PartialSettlement {
     amount: number;
     senderId: string;
     receiverId: string;
+    currency: string;
 }
 
 export interface Settlement {
@@ -31,4 +33,5 @@ export interface Settlement {
     partialSettlements: PartialSettlement[];
     ownerId: string;
     isPublic: boolean;
+    defaultCurrency: string;
 }
