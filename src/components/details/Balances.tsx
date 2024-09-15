@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
 import { Settlement } from '../../models/models';
 import { computeBalances } from '../../models/balance';
+import { formatCurrency } from '../../utils/currencyFormatter';
 
 interface BalancesProps {
     settlement: Settlement;
@@ -39,7 +40,7 @@ const Balances: React.FC<BalancesProps> = ({ settlement }) => {
                     <TableRow>
                         {balances.map(b => (
                             <TableCell key={b.id} align="right">
-                                {b.balance}
+                                {formatCurrency(-b.balance, 'USD')}
                             </TableCell>
                         ))}
                     </TableRow>

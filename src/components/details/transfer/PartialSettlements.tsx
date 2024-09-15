@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Settlement, PartialSettlement, Person } from '../../../models/models';
 import EditTransferDialog from './EditTransferDialog';
 import NewTransferDialog from './NewTransferDialog';
+import { formatCurrency } from '../../../utils/currencyFormatter';
 
 interface PartialSettlementsProps {
     settlement: Settlement;
@@ -33,7 +34,7 @@ const PartialSettlements: React.FC<PartialSettlementsProps> = ({ settlement, add
     return (
         <>
             <Typography variant="h5" gutterBottom style={{ marginTop: '2rem' }}>
-                Partial Settlements
+                Transfers
             </Typography>
             <Button
                 variant="outlined"
@@ -56,7 +57,7 @@ const PartialSettlements: React.FC<PartialSettlementsProps> = ({ settlement, add
                     {partialSettlements.map((transfer) => (
                         <TableRow key={transfer.id}>
                             <TableCell>{transfer.date}</TableCell>
-                            <TableCell>{transfer.amount}</TableCell>
+                            <TableCell>{formatCurrency(transfer.amount, 'USD')}</TableCell>
                             <TableCell>
                                 {participants.find(p => p.id === transfer.senderId)?.name || 'Unknown'}
                             </TableCell>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
 import { Settlement, Person } from '../../models/models';
 import { computeBalances } from '../../models/balance';
+import { formatCurrency } from '../../utils/currencyFormatter';
 
 interface DebtMatrixProps {
     settlement: Settlement;
@@ -66,7 +67,7 @@ const DebtMatrix: React.FC<DebtMatrixProps> = ({ settlement }) => {
                             {participants.map((col) => (
                                 <TableCell key={col.id} align="right">
                                     {debts[row.id] && debts[row.id][col.id]
-                                        ? debts[row.id][col.id]
+                                        ? formatCurrency(debts[row.id][col.id], 'USD')
                                         : ''}
                                 </TableCell>
                             ))}

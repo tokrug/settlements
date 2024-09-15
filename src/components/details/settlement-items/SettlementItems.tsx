@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Settlement, Item, Person } from '../../../models/models';
 import EditItemDialog from './EditItemDialog';
 import NewItemDialog from './NewItemDialog';
+import { formatCurrency } from '../../../utils/currencyFormatter';
 
 interface SettlementItemsProps {
     settlement: Settlement;
@@ -48,7 +49,7 @@ const SettlementItems: React.FC<SettlementItemsProps> = ({ settlement, addItem, 
     return (
         <>
             <Typography variant="h5" gutterBottom style={{ marginTop: '2rem' }}>
-                Settlement Items
+                Items
             </Typography>
             <Button
                 variant="outlined"
@@ -93,12 +94,12 @@ const SettlementItems: React.FC<SettlementItemsProps> = ({ settlement, addItem, 
                             <TableCell style={{ borderRight: '2px solid black' }}>{item.date}</TableCell>
                             {participants.map((p) => (
                                 <TableCell key={p.id} style={{ borderRight: p === participants[participants.length - 1] ? '2px solid black' : 'none' }}>
-                                    {item.paidBy[p.id] || 0}
+                                    {formatCurrency(item.paidBy[p.id] || 0, 'USD')} {/* Change 'USD' to the appropriate currency code */}
                                 </TableCell>
                             ))}
                             {participants.map((p) => (
                                 <TableCell key={p.id} style={{ borderRight: p === participants[participants.length - 1] ? '2px solid black' : 'none' }}>
-                                    {item.shouldPay[p.id] || 0}
+                                    {formatCurrency(item.shouldPay[p.id] || 0, 'USD')} {/* Change 'USD' to the appropriate currency code */}
                                 </TableCell>
                             ))}
                             <TableCell>
@@ -117,12 +118,12 @@ const SettlementItems: React.FC<SettlementItemsProps> = ({ settlement, addItem, 
                         <TableCell style={{ borderRight: '2px solid black' }}></TableCell>
                         {participants.map((p) => (
                             <TableCell key={`sum-paid-${p.id}`} style={{ borderRight: p === participants[participants.length - 1] ? '2px solid black' : 'none' }}>
-                                <strong>{summaryPaidBy[p.id]}</strong>
+                                <strong>{formatCurrency(summaryPaidBy[p.id], 'USD')}</strong>
                             </TableCell>
                         ))}
                         {participants.map((p) => (
                             <TableCell key={`sum-shouldPay-${p.id}`} style={{ borderRight: p === participants[participants.length - 1] ? '2px solid black' : 'none' }}>
-                                <strong>{summaryShouldPay[p.id]}</strong>
+                                <strong>{formatCurrency(summaryShouldPay[p.id], 'USD')}</strong>
                             </TableCell>
                         ))}
                         <TableCell></TableCell>

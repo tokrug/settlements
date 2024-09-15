@@ -20,7 +20,7 @@ import {
  */
 export const addSettlement = async (settlement: Settlement): Promise<void> => {
     try {
-        await addDoc(collection(db, 'settlements'), settlement);
+        await setDoc(doc(db, 'settlements', settlement.id), settlement);
     } catch (error) {
         console.error('Error adding settlement:', error);
         throw error;
