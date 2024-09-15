@@ -135,7 +135,18 @@ const SettlementsList: React.FC = () => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
-                    
+                    <TextField
+                        select
+                        label="Currency"
+                        value={selectedCurrency}
+                        onChange={(e) => setSelectedCurrency(e.target.value)} // Update selected currency
+                    >
+                        {Object.values(currencies).map((currency) => (
+                            <MenuItem key={currency.code} value={currency.code}>
+                                {currency.symbol} {currency.code}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                     <Typography variant="h6">Participants</Typography>
                     {participants.map((p) => (
                         <Typography key={p.id}>{p.name}</Typography>
@@ -160,18 +171,6 @@ const SettlementsList: React.FC = () => {
                     >
                         Add Participant
                     </Button>
-                    <TextField
-                        select
-                        label="Currency"
-                        value={selectedCurrency}
-                        onChange={(e) => setSelectedCurrency(e.target.value)} // Update selected currency
-                    >
-                        {Object.values(currencies).map((currency) => (
-                            <MenuItem key={currency.code} value={currency.code}>
-                                {currency.symbol} {currency.code}
-                            </MenuItem>
-                        ))}
-                    </TextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>
